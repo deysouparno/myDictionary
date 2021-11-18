@@ -11,6 +11,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -41,7 +42,7 @@ class WordInfoViewModel @Inject constructor(private val getWordInfo: GetWordInfo
 
                         is Resource.Success -> {
                             _state.value = state.value.copy(
-                                wordinfoItems = result.data ?: emptyList(),
+                                wordInfoItems = result.data ?: emptyList(),
                                 isLoading = false
                             )
 
@@ -49,7 +50,7 @@ class WordInfoViewModel @Inject constructor(private val getWordInfo: GetWordInfo
 
                         is Resource.Error -> {
                             _state.value = state.value.copy(
-                                wordinfoItems = result.data ?: emptyList(),
+                                wordInfoItems = result.data ?: emptyList(),
                                 isLoading = false
                             )
                             _eventFlow.emit(UIEvent.ShowSnackbar(result.message ?: "Unknown error"))
@@ -57,13 +58,13 @@ class WordInfoViewModel @Inject constructor(private val getWordInfo: GetWordInfo
 
                         is Resource.Loading -> {
                             _state.value = state.value.copy(
-                                wordinfoItems = result.data ?: emptyList(),
+                                wordInfoItems = result.data ?: emptyList(),
                                 isLoading = true
                             )
                         }
 
                     }
-                }
+                }.launchIn(this)
         }
     }
 

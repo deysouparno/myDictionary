@@ -4,7 +4,7 @@ import com.example.mydictionary.feature_dictionary.data.remote.dto.WordInfoDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface DictionariApi {
+interface DictionaryApi {
 
     @GET("/api/v2/entries/en/{word}")
     suspend fun getWordInfo(
